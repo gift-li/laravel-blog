@@ -7,23 +7,26 @@
 @endsection
 
 @section('content')
-  {{-- @foreach ($products->chunk(3) as $productChunk)
-    <div class="card-deck my-3">
-      @foreach ($productChunk as $product)
-        <div class="card">
-          <img src="{{ $product->imagePath }}" class="card-img-top img-responsive" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ $product->title }}</h5>
-            <p class="card-text">{{ $product->description }}</p>
-          </div>
-          <div class="card-footer d-flex justify-content-between align-items-center">
-            <span class="price">{{ $product->price }}</span>
-            <span class="">
-                <a href="{{ route('product.addToCart', ['id' => $product->id]) }}" class="btn btn-primary" role="button">Add to Cart</a>
-            </span>
-          </div>
-        </div>
-      @endforeach
+<div class="row justify-content-center">
+    <div class="col col-md-4 text-center">
+        <h1>文章列表</h1>
+        <a href="{{ route('post.create') }}" class="btn btn-primary">新增文章</a>
     </div>
-  @endforeach --}}
+    <table class="table border border-black">
+      <td class="border border-black">標題</td>
+      <td class="border border-black">內容</td>
+      <td class="border border-black">動作</td>
+      @foreach($posts as $post)
+      <tr class="border border-black">
+          <td class="border border-black">{{ $post->title }}</td>
+          <td class="border border-black">{{ $post->content }}</td>
+          <td class="border border-black">
+              <a href="{{ route('post.show',$post->id ) }}">查看</a>
+              <a href="{{ route('post.edit',$post->id ) }}">編輯</a>
+              <a href="{{ route('post.destroy',$post->id ) }}">刪除</a>
+          </td>
+      </tr>
+      @endforeach
+  </table>
+</div>
 @endsection

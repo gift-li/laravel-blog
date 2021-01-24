@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostTable extends Migration
+class CreateUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreatePostTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author_id'); // author_id: unsignedBigInteger
-            $table->foreign('author_id')->references('id')->on('user')->onDelete('cascade');
-            $table->string('title'); // title: string
-            $table->text('content'); // content: text
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('password');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreatePostTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('users');
     }
 }
