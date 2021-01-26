@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('/post', 'PostController');
+Route::get('/', function ($id) {
+    return view('post.index');
+});
+Route::resource('post', 'PostController');
 Route::group(['prefix' => 'user'], function () {
     Route::group(['middleware' => ['guest']], function () {
         Route::get('/signup', [

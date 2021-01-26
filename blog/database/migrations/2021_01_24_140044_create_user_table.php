@@ -17,7 +17,8 @@ class CreateUserTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->integer('status')->default('1');
             $table->timestamps();
         });
     }

@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->title,
-        'content' => $faker->paragraph
+        'content' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true)
     ];
 });

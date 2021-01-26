@@ -39,7 +39,9 @@ class PostController extends Controller
             'title' => $request->input('title'),
             'content' => $request->input('content')
         ]);
-        $post->save();
+        if ($this->authorize('create', $post)){
+            $post->save();
+        }
 
         return redirect(route('post.index'));
     }
@@ -63,7 +65,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('post.edit')->withPost($post);
+        if ($this->authorize('view', $post)){
+            return view('post.edit')->withPost($post);
+        }
     }
 
     /**
@@ -75,11 +79,11 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $post = new Post([
-            'title' => $request->input('title'),
-            'content' => $request->input('content')
-        ]);
-        $post->save();
+        if ($this->authorize('update', $post)){
+            $post['title'] = $request->input('title');
+            $post['content'] = $request->input('content');
+            $post->save();
+        }
 
         return redirect(route('post.index'));
     }
@@ -92,7 +96,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
+        if ($this->authorize('delete', $post)){
+            $post->delete();
+        }
         return redirect(route('post.index'));
     }
 }
