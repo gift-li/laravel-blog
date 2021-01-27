@@ -7,15 +7,37 @@ use App\User;
 
 class UserController extends Controller
 {
-    public function signin(Request $request){
+    public function getSignup() {
+        return view('user.signup');
+    }
+    public function postSignup(Request $request){
+        $this->validate($request, [
+            'name' => 'required|string|unique:users',
+            'email' => 'required|string|unique:users',
+            'password' => 'string|min:4'
+        ]);
+
+        $user = new User([
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password'))
+        ]);
+        $user->save();
+        
+        Auth::login($user);
+
+        return redirect()->route('post.index');
+    }
+    public function getSignin(Request $request){
+        return view('user.signin');
+    }
+    public function postSignin(Request $request){
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'string|min:4'
         ]);    
         if (Auth::attempt(['email' => $request->input('email'),
                         'password' => $request->input('password')])){
-            Auth::login($user);
-            return redirect()->route('user.index');
+            return redirect()->route('post.index');
         }
         return redirect()->back();
     }
@@ -30,10 +52,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        if ($this->authorize('viewAny', $user)){
+        if ($this->authorize('viewAny', Auth::user())){
             return redirect()->route('user.index');
+        }else if ($this->authorize('view', Auth::user())){
+            return redirect()->route('user.show', Auth::user());
         }
-        return redirect()->back();
     }
 
     /**
