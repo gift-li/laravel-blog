@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('content')
-<form class="row justify-content-center mx-auto" action="{{ route('post.update', $post->id)}}" method="post">
+<form class="row justify-content-center mx-auto" action="{{ route('user.update', $user->id)}}" method="post">
     @csrf
     @method('PUT')
     <div class="col text-center">
-        <h3 class="py-2 border-bottom border-grey">編輯會員資料</h3>
+        <h3 class="py-2 border-bottom border-grey">編輯貼文</h3>
         <div class="form-group row">
             <label for="title" class="col-sm-2 col-form-label">標題</label>
             

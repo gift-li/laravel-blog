@@ -13,9 +13,9 @@
             </div><br />
         @endif --}}
         <form class="form-signin" action="{{ route('user.signin') }}" method="POST">
-            <h1 class="h3 mb-5 font-weight-normal">Sign in</h1>
+            <h1 class="h3 mb-5 font-weight-normal">登入</h1>
             <div class="form-group">
-                <label for="email" class="sr-only">Email address</label>
+                <label for="email" class="sr-only">信箱</label>
                 <input type="text" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
             </div>
             <div class="form-group">

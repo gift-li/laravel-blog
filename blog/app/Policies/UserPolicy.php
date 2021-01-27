@@ -2,16 +2,14 @@
 
 namespace App\Policies;
 
-use App\Post;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PostPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user)
-    {
+    public function before(User $user){
         return $user->status === 1;
     }
     /**
@@ -29,12 +27,12 @@ class PostPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\User  $model
      * @return mixed
      */
-    public function view(User $user, Post $post)
+    public function view(User $user, User $viewUser)
     {
-        return $post->author_id === $user->id;
+        return $viewUser->id === $user->id;
     }
 
     /**
@@ -52,47 +50,47 @@ class PostPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\User  $model
      * @return mixed
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, User $updateUser)
     {
-        return $user->id === $post->author_id;
+        return $updateUser->id === $user->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\User  $model
      * @return mixed
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, User $model)
     {
-        return $user->id === $post->author_id;
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\User  $model
      * @return mixed
      */
-    public function restore(User $user, Post $post)
+    public function restore(User $user, User $restoreUser)
     {
-        return $user->status === 1;
+        return $restoreUser->id === $user->id;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\User  $model
      * @return mixed
      */
-    public function forceDelete(User $user, Post $post)
+    public function forceDelete(User $user, User $model)
     {
-        return $user->status === 1;
+        return false;
     }
 }
