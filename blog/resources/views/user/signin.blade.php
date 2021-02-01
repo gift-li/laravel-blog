@@ -3,7 +3,7 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col col-md-4 text-center">
-        {{-- @if ($errors->any())
+        @if ($errors->any())
             <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -11,7 +11,7 @@
                 @endforeach
             </ul>
             </div><br />
-        @endif --}}
+        @endif
         <form class="form-signin" action="{{ route('user.signin') }}" method="POST">
             <h1 class="h3 mb-5 font-weight-normal">登入</h1>
             <div class="form-group">

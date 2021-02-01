@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// Remember to add Auth class
+use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class UserController extends Controller
@@ -10,40 +12,50 @@ class UserController extends Controller
     public function getSignup() {
         return view('user.signup');
     }
+
     public function postSignup(Request $request){
         $this->validate($request, [
             'name' => 'required|string|unique:users',
-            'email' => 'required|string|unique:users',
+            'email' => 'required|email|unique:users', // Email type is better
             'password' => 'string|min:4'
         ]);
 
         $user = new User([
+            'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password'))
+            'password' => bcrypt($request->input('password')),
+            'status' => '1'
         ]);
         $user->save();
-        
         Auth::login($user);
 
         return redirect()->route('post.index');
     }
+
     public function getSignin(Request $request){
         return view('user.signin');
     }
+
     public function postSignin(Request $request){
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'string|min:4'
-        ]);    
-        if (Auth::attempt(['email' => $request->input('email'),
-                        'password' => $request->input('password')])){
+        ]);
+        // Better way to perform your code
+        if (Auth::attempt([
+            'email' => $request->input('email'),
+            'password' => $request->input('password')
+        ])){
             return redirect()->route('post.index');
         }
-        return redirect()->back();
+        return redirect()->route('post.index');
     }
+    
+    //  Be careful of the name
     public function logout() {
         Auth::logout();
-        return redirect()->back();
+        // return redirect()->back(); // Be careful of the routes you set to redirect
+        return redirect()->route('post.index');
     }
     /**
      * Display a listing of the resource.
@@ -52,10 +64,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        if ($this->authorize('viewAny', Auth::user())){
-            return redirect()->route('user.index');
+        if ($this->authorize('viewAny', Auth::user())){ // If not admin, this throws 403 error. The way to implementation this function should be reconstruct.
+            // return redirect()->route('user.index'); // You fall into an infinite loop.
+            return view('user.index')->withUsers(User::all()->sortByDesc('id'));
         }else if ($this->authorize('view', Auth::user())){
-            return redirect()->route('user.show', Auth::user());
+            return view('user.show')->withUser(User::find(Auth::id()));
         }
     }
 
@@ -66,7 +79,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return redirect('user.create');
+        return view('user.create');
     }
 
     /**
@@ -78,24 +91,24 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|unique:users',
+            'name' => 'required|string|unique:users', // Is this needed to be unique
             'email' => 'required|string|unique:users',
-            'password' => 'string|min:4'
+            'password' => 'required|string|min:4' // Required
         ]);
         $user = new User([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'status' => 2
+            'password' => bcrypt($request->input('password')),
+            'status' => '2'
         ]);
-        if ($this->authorize('create', $user)){
+        if ($this->authorize('create', Auth::user())){
             $user['status'] = 1;
             $user->save();
         }else {
             $user->save();
         }
 
-        return redirect()->route('post.index');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -106,8 +119,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if ($this->authorize('view', $user)){
-            return redirect()->route('user.show');
+        if ($this->authorize('view', Auth::user())){
+            return view('user.show')->withUser($user);
         }
     }
 
@@ -119,8 +132,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($this->authorize('view', $user)){
-            return redirect()->route('user.show')->withUser($user);
+        if ($this->authorize('view', Auth::user())){
+            return view('user.edit')->withUser($user);
         }
     }
 
@@ -133,15 +146,20 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if ($this->authorize('update', $user)){
-            if ($this->authorize('viewAny', $user)){
-                return redirect()->route('user.index');
-            }else if ($this->authorize('view', $user)){                
-                return redirect()->route('user.show')->withUser($user);
-            }
+        $this->validate($request, [
+            'name' => 'required|string', // Is this needed to be unique
+            'email' => 'required|string',
+            'password' => 'required|string|min:4' // Required
+        ]);
+
+        if ($this->authorize('update', Auth::user())){
+            $user['name'] = $request->input('name');
+            $user['email'] = $request->input('email');
+            $user['password'] = bcrypt($request->input('password'));
+            $user->save();
         }
 
-        return redirect()->route('post.index');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -150,12 +168,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($deleteUser)
+    public function destroy(User $deleteUser)
     {
-        if ($this->authorize('delete', $deleteUser)){
+        if ($this->authorize('delete', Auth::user())){
             $deleteUser->delete();
-            return redirect()->route('user.index');
         }
-        return redirect()->route('user.show');
+        return redirect()->route('user.index');
     }
 }

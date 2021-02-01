@@ -7,27 +7,30 @@
 @endsection
     
 @section('content')
-<div class="row w-25 mt-4 d-flex justify-content-between align-items-center mx-auto">
-    <h3 class="">最新貼文</h3>
-    <a type="button" class="btn btn-info" href="{{ route('post.create') }}" disabled="true">新增帳號</a>
+<div class="row w-25 mt-4 d-flex justify-content-center align-items-center mx-auto">
+    <h3 class="">會員資料</h3>
+    @if (Auth::check())
+        <a type="button" class="btn btn-info" href="{{ route('user.create') }}" disabled="true">新增帳號</a>        
+    @endif
 </div>
-@foreach ($posts as $post)
+@foreach ($users as $user)
 <div class="row w-100 mx-0 bg-white rounded shadow-sm text-muted">
     <dl
-        class="list-inline col d-flex align-items-center justify-content-center text-center"
+        class="list-inline col col-sm-12 d-flex align-items-center justify-content-center text-center"
     >
         <dt class="list-inline-item col col-md-1 col-sm-1">
             <svg class="bd-placeholder-img mr-1 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
         </dt>
-        <dd class="list-inline-item col col-md-9 col-sm-9 m-0">
+        <dd class="list-inline-item col col-md-9 col-sm-9 m-0 text-left">
             <div class="list-inline">
                 <h3 class="list-inline-item border-right">{{ $user->name }}</h3>
                 <div class="list-inline-item border-right p-2">
                     {{ $user->email }}
                 </div>
+                {{-- This should not be performed even to admin user
                 <div class="list-inline-item">
                     {{ $user->password }}
-                </div>
+                </div> --}}
             </div>
         </dd>
         <dd class="list-inline-item col col-md col-sm-3">
@@ -39,6 +42,9 @@
                 @method('delete')
                 <button class="btn btn-outline-danger my-1" type="submit">刪除</button>
             </form>
+            @can('viewAll', Auth::user())
+            <a type="button" class="btn btn-danger my-1" href="{{ route('user.suspend',$user->id ) }}">停權</a>
+            @endcan
         </div>
         </dd>
     </dl>

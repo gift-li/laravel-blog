@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<form class="row justify-content-center mx-auto" action="{{ route('user.update', $user->id)}}" method="post">
+<form class="row justify-content-center mx-auto" action="{{ route('post.update', $post->id)}}" method="post">
     @csrf
     @method('PUT')
     <div class="col text-center">

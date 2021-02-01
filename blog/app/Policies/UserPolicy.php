@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -10,7 +11,7 @@ class UserPolicy
     use HandlesAuthorization;
 
     public function before(User $user){
-        return $user->status === 1;
+        return Auth::user()->status === '1';
     }
     /**
      * Determine whether the user can view any models.
@@ -20,7 +21,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->status === 1;
+        return false;
     }
 
     /**
@@ -32,7 +33,7 @@ class UserPolicy
      */
     public function view(User $user, User $viewUser)
     {
-        return $viewUser->id === $user->id;
+        return $viewUser->id === Auth::id();
     }
 
     /**
@@ -43,7 +44,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->status === 2;
+        return Auth::user()->status === '2';
     }
 
     /**
@@ -55,7 +56,7 @@ class UserPolicy
      */
     public function update(User $user, User $updateUser)
     {
-        return $updateUser->id === $user->id;
+        return $updateUser->id === Auth::id();
     }
 
     /**
@@ -79,7 +80,7 @@ class UserPolicy
      */
     public function restore(User $user, User $restoreUser)
     {
-        return $restoreUser->id === $user->id;
+        return $restoreUser->id === Auth::id();
     }
 
     /**

@@ -16,9 +16,9 @@ class CreateUserTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->nullable();
-            $table->string('password')->nullable();
-            $table->integer('status')->default('1');
+            $table->string('email')->unique(); // Email is used to verify login, it should be unique instead of nullable
+            $table->string('password'); // Password is also needed for login, it should not be nullable
+            $table->enum('status', array('0', '1', '2'))->default('1'); // I prefer enum, and add comment for each status num means
             $table->timestamps();
         });
     }

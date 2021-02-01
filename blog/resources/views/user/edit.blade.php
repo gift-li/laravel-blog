@@ -1,6 +1,15 @@
 @extends('layouts.master')
 
 @section('content')
+@if ($errors->any())
+<div class="alert alert-danger text-center">
+<ul>
+    @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+    @endforeach
+</ul>
+</div><br />
+@endif
 <form class="row justify-content-center mx-auto" action="{{ route('user.update', $user->id)}}" method="post">
     @csrf
     @method('PUT')

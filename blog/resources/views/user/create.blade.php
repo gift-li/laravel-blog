@@ -2,9 +2,18 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col col-md-8 text-center">
+    <div class="col col-md-8">
+        @if ($errors->any())
+        <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        </div><br />
+        @endif
         <h1 class="">新增帳號</h1>
-        <form class="form-post" action="{{ route('user.create')}}" method="post">
+        <form class="form-post text-center" action="{{ route('user.store') }}" method="post">
             @csrf
             <div class="form-group">
                 <label for="title" class="sr-only">姓名</label>
@@ -16,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="content" class="sr-only">密碼</label>
-                <input type="text" id="password" name="password" class="form-control" placeholder="password" requireds>
+                <input type="text" id="password" name="password" class="form-control" placeholder="password" requireds> {{-- Be care of the type --}}
             </div>
             <button class="btn btn-primary" type="submit">創建帳號</button>
         </form>

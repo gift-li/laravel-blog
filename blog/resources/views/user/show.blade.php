@@ -13,7 +13,7 @@
             <h3>姓名</h3>
         </dt>
         <dd class="list-inline-item col col-9 m-0">
-            <h4 class="content">{{ $user->title }}</h4>
+            <h4 class="content">{{ $user->name }}</h4>
         </dd>
     </dl>
 </div>
@@ -33,7 +33,7 @@
             <h3>密碼</h3>
         </dt>
         <dd class="list-inline-item col col-9 m-0">
-            <p class="content my-2">{{ $user->email }}</p>
+            <p class="content my-2">{{ $user->password }}</p>
         </dd>
     </dl>
 </div>

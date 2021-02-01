@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// route('partials.index') need fix
 Route::get('/', function () {
     return view('partials.index');
 });
@@ -35,15 +36,23 @@ Route::group(['middleware' => ['guest']], function () {
         'uses' => 'UserController@postSignin',
         'as' => 'user.signin'
     ]);
-});
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/profile', [
-        'uses' => 'UserController@getProfile',
-        'as' => 'user.profile'
+    Route::get('/suspend', [
+        'uses' => 'UserController@postSignin',
+        'as' => 'user.signin'
     ]);
-    
     Route::get('/logout', [
-        'uses' => 'UserController@getLogout',
+        'uses' => 'UserController@logout',
         'as' => 'user.logout'
     ]);
 });
+// Route::group(['middleware' => ['auth']], function () {
+//     Route::get('/profile', [
+//         'uses' => 'UserController@getProfile',
+//         'as' => 'user.profile'
+//     ]);
+
+//     Route::get('/logout', [
+//         'uses' => 'UserController@getLogout',
+//         'as' => 'user.logout'
+//     ]);
+// });

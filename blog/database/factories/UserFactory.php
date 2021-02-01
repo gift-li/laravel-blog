@@ -21,7 +21,7 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '123',
+        'password' => bcrypt('1234'), // Data in factory won't proceed by controllers, thus password should be bcrypt. Further more, be care about the restriction in your controller, such as at least 4 digits required.
         'status' => '1'
     ];
 });

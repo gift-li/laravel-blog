@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Post;
 
 class PostController extends Controller
 {
+    // Use __constructor to build proper middleware
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post.index')->withPosts(Post::all());
+        return view('post.index')->withPosts(Post::all()->sortByDesc('id'));
     }
 
     /**
@@ -36,6 +38,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $post = new Post([
+            'author_id' => Auth::id(),
             'title' => $request->input('title'),
             'content' => $request->input('content')
         ]);
@@ -43,7 +46,7 @@ class PostController extends Controller
             $post->save();
         }
 
-        return redirect(route('post.index'));
+        return redirect()->route('post.index');
     }
 
     /**
@@ -85,7 +88,7 @@ class PostController extends Controller
             $post->save();
         }
 
-        return redirect(route('post.index'));
+        return redirect()->route('post.index');
     }
 
     /**
@@ -99,6 +102,6 @@ class PostController extends Controller
         if ($this->authorize('delete', $post)){
             $post->delete();
         }
-        return redirect(route('post.index'));
+        return redirect()->route('post.index');
     }
 }
