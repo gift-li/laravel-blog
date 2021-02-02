@@ -21,16 +21,22 @@
         <dt class="list-inline-item col col-md-1 col-sm-1">
             <svg class="bd-placeholder-img mr-1 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
         </dt>
+        @if ($user->role == 'suspend')
+        <dd class="list-inline-item col col-md-9 col-sm-9 m-0 text-left">
+            <div class="list-inline">
+                <h3 class="list-inline-item border-right" style="color: red">停權帳戶</h3>
+                <div class="list-inline-item border-right p-2">
+                    {{ $user->email }}
+                </div>
+            </div>
+        </dd>
+        @endif
         <dd class="list-inline-item col col-md-9 col-sm-9 m-0 text-left">
             <div class="list-inline">
                 <h3 class="list-inline-item border-right">{{ $user->name }}</h3>
                 <div class="list-inline-item border-right p-2">
                     {{ $user->email }}
                 </div>
-                {{-- This should not be performed even to admin user
-                <div class="list-inline-item">
-                    {{ $user->password }}
-                </div> --}}
             </div>
         </dd>
         <dd class="list-inline-item col col-md col-sm-3">
@@ -42,19 +48,12 @@
                 @method('delete')
                 <button class="btn btn-outline-danger my-1" type="submit">刪除</button>
             </form>
-            @can('viewAll', Auth::user())
-            <a type="button" class="btn btn-danger my-1" href="{{ route('user.suspend',$user->id ) }}">停權</a>
+            @can('admin')
+                <a type="button" class="btn btn-danger my-1" href="{{ route('web.suspend',$user->id ) }}">停權</a>
             @endcan
         </div>
         </dd>
     </dl>
 </div>
 @endforeach
-<div class="row w-100 mb-3 p-3 bg-white rounded shadow-sm text-muted">
-    <div class="col text-center">
-        <h5 class="text-center mt-3">
-            <button type="button" class="btn btn-outline-primary" href="#">全部文章</button>
-        </h5>
-    </div>
-</div>
 @endsection

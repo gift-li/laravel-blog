@@ -13,7 +13,7 @@
     @yield('styles')
 </head>
 <body>
-    @include('partials.header')
+    @include('web.header')
     <div class="container">
         @yield('content')
     </div>

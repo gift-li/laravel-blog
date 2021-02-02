@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect()->route('partials.index');
+            return redirect()->route('web.index');
         }
 
         return $next($request);

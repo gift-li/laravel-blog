@@ -16,7 +16,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post.index')->withPosts(Post::all()->sortByDesc('id'));
+        if ($this->authorize('viewAny', Auth::user())){ // If not admin, this throws 403 error. The way to implementation this function should be reconstruct.
+            // return redirect()->route('user.index'); // You fall into an infinite loop.
+            return view('post.index')->withPosts(Post::all()->sortByDesc('id'));
+        }else if ($this->authorize('view', Auth::user())){
+            return view('post.index')->withPosts(Post::find(Auth::id())->sortByDesc('id'));
+        }
     }
 
     /**

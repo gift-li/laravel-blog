@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-2">
-  <a class="navbar-brand" href="/"{{-- Without declaring a route name, use url is fine --}}>Brand for no brand</a>
+  <a class="navbar-brand" href="{{ route('web.index') }}">Brand for no brand</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,15 +19,15 @@
           </div>
         </li>
         <li class="nav-item">
-          <a href="{{ route('user.logout') }}" class="nav-link btn btn-primary">登出</a>
+          <a href="{{ route('web.logout') }}" class="nav-link btn btn-primary">登出</a>
         </li>
         @else
         {{-- 遊客畫面 --}}
         <li class="nav-item">
-          <a href="{{ route('user.signup') }}" class="nav-link">創建帳戶</a>
+          <a href="{{ route('web.signup') }}" class="nav-link">創建帳戶</a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('user.signin') }}" class="btn btn-primary" role="button">登入</a>
+          <a href="{{ route('web.signin') }}" class="btn btn-primary" role="button">登入</a>
         </li>
         @endif
       </ul>

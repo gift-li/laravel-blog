@@ -12,7 +12,7 @@ class PostPolicy
 
     public function before(User $user)
     {
-        return $user->status === '1';
+        return $user->role === User::ROLE_ADMIN;
     }
     /**
      * Determine whether the user can view any models.
@@ -22,7 +22,7 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->status === '1';
+        return $user->role === User::ROLE_ADMIN;
     }
 
     /**
@@ -45,7 +45,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        return $user->status === '2';
+        return $user->role === User::ROLE_USER;
     }
 
     /**
@@ -81,7 +81,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post)
     {
-        return $user->status === '1';
+        return false;
     }
 
     /**
@@ -93,6 +93,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        return $user->status === '1';
+        return false;
     }
 }

@@ -11,7 +11,7 @@ class UserPolicy
     use HandlesAuthorization;
 
     public function before(User $user){
-        return Auth::user()->status === '1';
+        return Auth::user()->role === User::ROLE_ADMIN;
     }
     /**
      * Determine whether the user can view any models.
@@ -44,7 +44,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return Auth::user()->status === '2';
+        return Auth::user()->role === User::ROLE_USER;
     }
 
     /**

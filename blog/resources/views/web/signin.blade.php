@@ -12,7 +12,7 @@
             </ul>
             </div><br />
         @endif
-        <form class="form-signin" action="{{ route('user.signin') }}" method="POST">
+        <form class="form-signin" action="{{ route('web.signin') }}" method="POST">
             <h1 class="h3 mb-5 font-weight-normal">登入</h1>
             <div class="form-group">
                 <label for="email" class="sr-only">信箱</label>
@@ -22,11 +22,11 @@
                 <label for="password" class="sr-only">密碼</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
             </div>
-            <div class="checkbox mb-3">
+            {{-- <div class="checkbox mb-3">
               <label>
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
-            </div>
+            </div> --}}
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
             {{ csrf_field() }}

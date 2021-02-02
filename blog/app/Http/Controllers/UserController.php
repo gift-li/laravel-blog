@@ -9,54 +9,6 @@ use App\User;
 
 class UserController extends Controller
 {
-    public function getSignup() {
-        return view('user.signup');
-    }
-
-    public function postSignup(Request $request){
-        $this->validate($request, [
-            'name' => 'required|string|unique:users',
-            'email' => 'required|email|unique:users', // Email type is better
-            'password' => 'string|min:4'
-        ]);
-
-        $user = new User([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'status' => '1'
-        ]);
-        $user->save();
-        Auth::login($user);
-
-        return redirect()->route('post.index');
-    }
-
-    public function getSignin(Request $request){
-        return view('user.signin');
-    }
-
-    public function postSignin(Request $request){
-        $this->validate($request, [
-            'email' => 'required|string',
-            'password' => 'string|min:4'
-        ]);
-        // Better way to perform your code
-        if (Auth::attempt([
-            'email' => $request->input('email'),
-            'password' => $request->input('password')
-        ])){
-            return redirect()->route('post.index');
-        }
-        return redirect()->route('post.index');
-    }
-    
-    //  Be careful of the name
-    public function logout() {
-        Auth::logout();
-        // return redirect()->back(); // Be careful of the routes you set to redirect
-        return redirect()->route('post.index');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -68,7 +20,7 @@ class UserController extends Controller
             // return redirect()->route('user.index'); // You fall into an infinite loop.
             return view('user.index')->withUsers(User::all()->sortByDesc('id'));
         }else if ($this->authorize('view', Auth::user())){
-            return view('user.show')->withUser(User::find(Auth::id()));
+            return view('user.show')->withUsers(User::find(Auth::id()));
         }
     }
 
@@ -99,10 +51,10 @@ class UserController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
-            'status' => '2'
+            'role' => User::ROLE_USER
         ]);
         if ($this->authorize('create', Auth::user())){
-            $user['status'] = 1;
+            $user['role'] = User::ROLE_ADMIN;
             $user->save();
         }else {
             $user->save();

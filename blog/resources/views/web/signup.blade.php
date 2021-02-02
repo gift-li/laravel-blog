@@ -15,7 +15,7 @@
             </ul>
             </div><br />
         @endif
-        <form class="form-signup text-center" action="{{ route('user.signup') }}" method="POST">
+        <form class="form-signup text-center" action="{{ route('web.signup') }}" method="POST">
             <h1 class="h3 mb-5 font-weight-normal">註冊</h1>
             {{-- Missed name input --}}
             <div class="form-group">
