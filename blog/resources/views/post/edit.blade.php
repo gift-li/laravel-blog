@@ -1,4 +1,7 @@
 @extends('layouts.master')
+@section('title')
+    editPost
+@endsection
 
 @section('content')
 <form class="row justify-content-center mx-auto" action="{{ route('post.update', $post->id)}}" method="post">

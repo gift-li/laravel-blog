@@ -1,9 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Laravel-Post
-@endsection
-@section('scripts')
-    <link rel="stylesheet" href="{{ URL::to('src/css/style.css') }}">
+    PostList
 @endsection
     
 @section('content')
@@ -13,6 +10,8 @@
         <a type="button" class="btn btn-info" href="{{ route('post.create') }}" disabled="true">新增文章</a>
     @endif
 </div>
+@if ($posts != null)
+    
 @foreach ($posts as $post)
 <div class="row w-100 mx-0 bg-white rounded shadow-sm text-muted">
     <dl
@@ -44,11 +43,5 @@
     </dl>
 </div>
 @endforeach
-<div class="row w-100 mb-3 p-3 bg-white rounded shadow-sm text-muted">
-    <div class="col text-center">
-        <h5 class="text-center mt-3">
-            <button type="button" class="btn btn-outline-primary" href="#">全部文章</button>
-        </h5>
-    </div>
-</div>
+@endif
 @endsection

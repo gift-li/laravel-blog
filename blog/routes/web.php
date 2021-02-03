@@ -47,8 +47,22 @@ Route::group(['middleware' => ['auth']], function () {
         'uses' => 'WebController@suspend',
         'as' => 'web.suspend'
     ]);
+    Route::get('/restore', [
+        'uses' => 'WebController@restore',
+        'as' => 'web.restore'
+    ]);
     Route::get('/logout', [
         'uses' => 'WebController@logout',
         'as' => 'web.logout'
     ]);
 });
+// Route::group(['middleware' => ['can:user']], function () {
+//     Route::resource('/post', 'PostController');
+    
+//     Route::resource('/user', 'UserController');
+
+//     Route::get('/logout', [
+//         'uses' => 'WebController@logout',
+//         'as' => 'web.logout'
+//     ]);
+// });

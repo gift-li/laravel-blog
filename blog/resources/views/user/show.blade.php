@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    User-Profile
+    myAccount
 @endsection
 
 @section('content')

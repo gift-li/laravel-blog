@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Post;
 
 class PostController extends Controller
@@ -16,11 +17,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        if ($this->authorize('viewAny', Auth::user())){ // If not admin, this throws 403 error. The way to implementation this function should be reconstruct.
+        if (Gate::allows('admin')){
             // return redirect()->route('user.index'); // You fall into an infinite loop.
             return view('post.index')->withPosts(Post::all()->sortByDesc('id'));
-        }else if ($this->authorize('view', Auth::user())){
-            return view('post.index')->withPosts(Post::find(Auth::id())->sortByDesc('id'));
+        }else if (Gate::allows('user')){
+            if (Post::where('author_id', Auth::id()) != null){
+                // Ques: cannot show login user's post
+                return view('post.index')->withPosts(Post::where('author_id', Auth::id()));
+            }else {
+                return view('post.index');
+            }
         }
     }
 
@@ -47,7 +53,7 @@ class PostController extends Controller
             'title' => $request->input('title'),
             'content' => $request->input('content')
         ]);
-        if ($this->authorize('create', $post)){
+        if (Gate::allows('admin') || Gate::allows('user')){
             $post->save();
         }
 

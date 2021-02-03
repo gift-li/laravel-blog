@@ -1,4 +1,7 @@
 @extends('layouts.master')
+@section('title')
+    editPost
+@endsection
 
 @section('content')
 <div class="row justify-content-center">

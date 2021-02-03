@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 // Remember to add Auth class
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 
@@ -16,11 +17,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        if ($this->authorize('viewAny', Auth::user())){ // If not admin, this throws 403 error. The way to implementation this function should be reconstruct.
+        if (Gate::allows('admin')){ // If not admin, this throws 403 error. The way to implementation this function should be reconstruct.
             // return redirect()->route('user.index'); // You fall into an infinite loop.
             return view('user.index')->withUsers(User::all()->sortByDesc('id'));
-        }else if ($this->authorize('view', Auth::user())){
-            return view('user.show')->withUsers(User::find(Auth::id()));
+        }else if (Gate::allows('user')){
+            return view('user.show')->withUser(User::find(Auth::id()));
         }
     }
 
@@ -53,7 +54,7 @@ class UserController extends Controller
             'password' => bcrypt($request->input('password')),
             'role' => User::ROLE_USER
         ]);
-        if ($this->authorize('create', Auth::user())){
+        if (Gate::allows('admin')){
             $user['role'] = User::ROLE_ADMIN;
             $user->save();
         }else {
@@ -120,10 +121,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $deleteUser)
+    public function destroy(User $user)
     {
-        if ($this->authorize('delete', Auth::user())){
-            $deleteUser->delete();
+        if ($this->authorize('delete', $user)){
+            $user->delete();
         }
         return redirect()->route('user.index');
     }

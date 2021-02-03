@@ -1,9 +1,8 @@
 @extends('layouts.master')
 @section('title')
-    Laravel-Post
+    Laravel-UserList
 @endsection
 @section('scripts')
-    <link rel="stylesheet" href="{{ URL::to('src/css/style.css') }}">
 @endsection
     
 @section('content')
@@ -12,6 +11,15 @@
     @if (Auth::check())
         <a type="button" class="btn btn-info" href="{{ route('user.create') }}" disabled="true">新增帳號</a>        
     @endif
+    {{-- @if ($errors->any())
+    <div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    </div><br />
+    @endif --}}
 </div>
 @foreach ($users as $user)
 <div class="row w-100 mx-0 bg-white rounded shadow-sm text-muted">
@@ -22,34 +30,35 @@
             <svg class="bd-placeholder-img mr-1 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
         </dt>
         @if ($user->role == 'suspend')
-        <dd class="list-inline-item col col-md-9 col-sm-9 m-0 text-left">
-            <div class="list-inline">
-                <h3 class="list-inline-item border-right" style="color: red">停權帳戶</h3>
-                <div class="list-inline-item border-right p-2">
-                    {{ $user->email }}
-                </div>
+        <dd class="list-inline-item col col-md-6 col-sm-6 m-0 text-left">
+            <h3 class="border-bottom" style="color: red">停權帳戶</h3>
+            <div class="p-2">
+                {{ $user->email }}
+            </div>
+        </dd>
+        @else
+        <dd class="list-inline-item col col-md-6 col-sm-6 m-0 text-left">
+            <h3 class="borderbottom">{{ $user->name }}</h3>
+            <div class="p-2">
+                {{ $user->email }}
             </div>
         </dd>
         @endif
-        <dd class="list-inline-item col col-md-9 col-sm-9 m-0 text-left">
-            <div class="list-inline">
-                <h3 class="list-inline-item border-right">{{ $user->name }}</h3>
-                <div class="list-inline-item border-right p-2">
-                    {{ $user->email }}
-                </div>
-            </div>
-        </dd>
-        <dd class="list-inline-item col col-md col-sm-3">
+        <dd class="list-inline-item col col-md col-sm">
         <div class="">
             <a type="button" class="btn btn-outline-primary my-1" href="{{ route('user.show',$user->id ) }}">查看</a>
             <a type="button" class="btn btn-outline-success my-1" href="{{ route('user.edit',$user->id ) }}">編輯</a>
-            <form method="POST" action="{{ route('user.destroy',$user->id ) }}">
+            <form class="btn p-0" method="POST" action="{{ route('user.destroy',$user->id ) }}">
                 @csrf
                 @method('delete')
                 <button class="btn btn-outline-danger my-1" type="submit">刪除</button>
             </form>
             @can('admin')
-                <a type="button" class="btn btn-danger my-1" href="{{ route('web.suspend',$user->id ) }}">停權</a>
+            @if ($user->role == 'suspend')
+            <a type="button" class="btn btn-info my-1" href="{{ route('web.restore',$user->id ) }}">復權</a>    
+            @else
+            <a type="button" class="btn btn-danger my-1" href="{{ route('web.suspend',$user->id ) }}">停權</a>                
+            @endif
             @endcan
         </div>
         </dd>

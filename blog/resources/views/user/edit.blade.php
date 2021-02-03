@@ -1,4 +1,7 @@
 @extends('layouts.master')
+@section('title')
+    editAccount
+@endsection
 
 @section('content')
 @if ($errors->any())

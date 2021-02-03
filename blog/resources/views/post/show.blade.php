@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Laravel-Post
+    MyPost
 @endsection
 @section('scripts')
 @endsection
