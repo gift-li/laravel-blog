@@ -63,22 +63,4 @@ class WebController extends Controller
         Auth::logout();
         return redirect()->route('web.index');
     }
-
-    // Ques: 'role' of the user->id model cannot be update
-    public function suspend(User $user) {
-        if (Gate::allows('admin')){
-            User::where('id', $user->id)->update([
-                'role' => User::ROLE_SUSPEND
-            ]);
-        }
-        return redirect()->route('user.index');
-    }
-    public function restore(User $user) {
-        if (Gate::allows('admin')){
-            User::where('id', $user->id)->update([
-                'role' => User::ROLE_USER
-            ]);
-        }
-        return redirect()->route('user.index');
-    }
 }

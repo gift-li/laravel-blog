@@ -43,13 +43,13 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::resource('/user', 'UserController');
     
-    Route::get('/suspend', [
-        'uses' => 'WebController@suspend',
-        'as' => 'web.suspend'
+    Route::post('/suspend', [
+        'uses' => 'UserController@suspend',
+        'as' => 'user.suspend'
     ]);
     Route::get('/restore', [
-        'uses' => 'WebController@restore',
-        'as' => 'web.restore'
+        'uses' => 'UserController@restore',
+        'as' => 'user.restore'
     ]);
     Route::get('/logout', [
         'uses' => 'WebController@logout',

@@ -20,7 +20,6 @@ class CreateUserTable extends Migration
             $table->string('email')->unique(); // Email is used to verify login, it should be unique instead of nullable
             $table->string('password'); // Password is also needed for login, it should not be nullable
             $table->enum('role', [User::ROLE_ADMIN, User::ROLE_USER, User::ROLE_SUSPEND])->default(User::ROLE_USER);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -48,16 +48,16 @@
         <div class="">
             <a type="button" class="btn btn-outline-primary my-1" href="{{ route('user.show',$user->id ) }}">查看</a>
             <a type="button" class="btn btn-outline-success my-1" href="{{ route('user.edit',$user->id ) }}">編輯</a>
-            <form class="btn p-0" method="POST" action="{{ route('user.destroy',$user->id ) }}">
+            {{-- <form class="btn p-0" method="POST" action="{{ route('user.destroy',$user->id ) }}">
                 @csrf
                 @method('delete')
                 <button class="btn btn-outline-danger my-1" type="submit">刪除</button>
-            </form>
+            </form> --}}
             @can('admin')
             @if ($user->role == 'suspend')
-            <a type="button" class="btn btn-info my-1" href="{{ route('web.restore',$user->id ) }}">復權</a>    
+            <a type="button" class="btn btn-info my-1" href="{{ route('user.restore',$user->id ) }}">復權</a>    
             @else
-            <a type="button" class="btn btn-danger my-1" href="{{ route('web.suspend',$user->id ) }}">停權</a>                
+            <a type="button" class="btn btn-danger my-1" href="{{ route('user.suspend',$user->id ) }}">停權</a>                
             @endif
             @endcan
         </div>

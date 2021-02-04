@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     const ROLE_ADMIN = 'admin';
     // const ROLE_MANAGER = 'manager';
     const ROLE_USER = 'user';
     const ROLE_SUSPEND = 'suspend';
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'id', 'name', 'email', 'password', 'role'
     ];
-    protected $dates = ['deleted_at'];
+    // protected $dates = ['deleted_at'];
 }

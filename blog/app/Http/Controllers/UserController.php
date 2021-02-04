@@ -128,4 +128,24 @@ class UserController extends Controller
         }
         return redirect()->route('user.index');
     }
+    
+    // Ques: 'role' of the user->id model cannot be update
+    // status: $user is an empty User instance
+    //     which means the parameter passed from View('user.index')->停權btn isn't successful; 
+    public function suspend(Request $request, User $user) {
+        if (Gate::allows('admin')){
+            User::find($user->id)->update([
+                'role' => User::ROLE_ADMIN
+            ]);
+        }
+        return redirect()->route('user.index');
+    }
+
+    public function restore(Request $request, User $user) {
+        if (Gate::allows('admin')){
+            $restore = User::where('id', $user->id)->select('role')->get();
+            $restore['role'] = User::ROLE_USER;
+        }
+        return redirect()->route('user.index');
+    }
 }
