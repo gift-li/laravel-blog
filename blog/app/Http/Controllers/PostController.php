@@ -10,6 +10,9 @@ use App\Post;
 class PostController extends Controller
 {
     // Use __constructor to build proper middleware
+    // public function __constructor() {
+
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -18,15 +21,9 @@ class PostController extends Controller
     public function index()
     {
         if (Gate::allows('admin')){
-            // return redirect()->route('user.index'); // You fall into an infinite loop.
             return view('post.index')->withPosts(Post::all()->sortByDesc('id'));
         }else if (Gate::allows('user')){
-            if (Post::where('author_id', Auth::id()) != null){
-                // Ques: cannot show login user's post
-                return view('post.index')->withPosts(Post::where('author_id', Auth::id()));
-            }else {
-                return view('post.index');
-            }
+            return view('post.index')->withPosts(Post::all()->where('author_id', Auth::id())->sortByDesc('id'));
         }
     }
 
@@ -68,7 +65,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('post.show')->withPost($post);
+        if (Gate::allows('author', $post)){
+            return view('post.show')->withPost($post);
+        }
     }
 
     /**
@@ -79,7 +78,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        if ($this->authorize('view', $post)){
+        // dd($post->author_id === Auth::id());
+        if (Gate::allows('author', $post)){
             return view('post.edit')->withPost($post);
         }
     }
@@ -93,7 +93,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        if ($this->authorize('update', $post)){
+        if (Gate::allows('author', $post)){
             $post['title'] = $request->input('title');
             $post['content'] = $request->input('content');
             $post->save();
@@ -110,9 +110,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if ($this->authorize('delete', $post)){
+        if (Gate::allows('author', $post)){
             $post->delete();
         }
+
         return redirect()->route('post.index');
     }
 }

@@ -15,8 +15,7 @@
             </div>
             <div class="form-group">
                 <label for="content" class="sr-only">內文</label>
-                {{-- textarea would be better --}}
-                <input type="text" id="content" name="content" class="form-control" placeholder="contents" requireds>
+                <textarea class="form-control" id="content" name="content" rows="10" ></textarea>
             </div>
             <button class="btn btn-primary" type="submit">新增</button>
         </form>

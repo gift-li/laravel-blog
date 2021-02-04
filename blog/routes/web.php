@@ -39,15 +39,12 @@ Route::group(['middleware' => ['guest']], function () {
     ]);
 });
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('/post', 'PostController');
     
-    Route::resource('/user', 'UserController');
-    
-    Route::post('/suspend', [
+    Route::patch('/suspend/{user}', [
         'uses' => 'UserController@suspend',
         'as' => 'user.suspend'
     ]);
-    Route::get('/restore', [
+    Route::patch('/restore/{user}', [
         'uses' => 'UserController@restore',
         'as' => 'user.restore'
     ]);
@@ -55,6 +52,10 @@ Route::group(['middleware' => ['auth']], function () {
         'uses' => 'WebController@logout',
         'as' => 'web.logout'
     ]);
+
+    Route::resource('/post', 'PostController');
+    
+    Route::resource('/user', 'UserController');
 });
 // Route::group(['middleware' => ['can:user']], function () {
 //     Route::resource('/post', 'PostController');

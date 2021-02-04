@@ -37,4 +37,9 @@
         </dd>
     </dl>
 </div>
+@if (Gate::allows('user'))
+<div class="text-center">
+    <a type="button" class="btn btn-info" href="{{ route('user.edit', $user->id) }}" disabled="true">修改資料</a>
+</div>
+@endif
 @endsection

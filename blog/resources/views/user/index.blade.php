@@ -55,9 +55,17 @@
             </form> --}}
             @can('admin')
             @if ($user->role == 'suspend')
-            <a type="button" class="btn btn-info my-1" href="{{ route('user.restore',$user->id ) }}">復權</a>    
+            <form class="btn p-0" method="POST" action="{{ route('user.restore',$user->id ) }}">
+                {{ csrf_field() }}
+                {{ method_field('PATCH') }}
+                <button class="btn btn-outline-info my-1" type="submit">復權</button>
+            </form>
             @else
-            <a type="button" class="btn btn-danger my-1" href="{{ route('user.suspend',$user->id ) }}">停權</a>                
+            <form class="btn p-0" method="POST" action="{{ route('user.suspend',$user->id ) }}">
+                @csrf
+                @method('PATCH')
+                <button class="btn btn-outline-danger my-1" type="submit">停權</button>
+            </form>
             @endif
             @endcan
         </div>

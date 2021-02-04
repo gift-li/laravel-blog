@@ -44,5 +44,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manager', function ($user) {
             return $user->role === User::ROLE_SUSPEND;
         });
+
+        // 作者 Gate 規則
+        Gate::define('author', function ($user, $post) {
+            return $post->author_id === $user->id or Gate::allows('admin');
+        });
     }
 }

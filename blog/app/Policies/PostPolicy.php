@@ -22,7 +22,7 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role === User::ROLE_ADMIN;
+        return false;
     }
 
     /**
@@ -34,7 +34,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        return $post->author_id === $user->id;
+        return $post->author_id == Auth::id();
     }
 
     /**
@@ -57,7 +57,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        return $user->id === $post->author_id;
+        return $post->author_id === Auth::id();
     }
 
     /**
@@ -69,7 +69,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        return $user->id === $post->author_id;
+        return $post->author_id === Auth::id();
     }
 
     /**

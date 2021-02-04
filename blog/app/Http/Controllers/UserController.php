@@ -85,7 +85,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($this->authorize('view', Auth::user())){
+        // Ques: 以下作法403，檢查過policy、參數、dd()，都正常卻無法正常運作
+        //      if ($this->authorize('view', Auth::user())){
+        if (Gate::allows('user')){
             return view('user.edit')->withUser($user);
         }
     }
@@ -100,12 +102,12 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->validate($request, [
-            'name' => 'required|string', // Is this needed to be unique
+            'name' => 'required|string',
             'email' => 'required|string',
-            'password' => 'required|string|min:4' // Required
+            'password' => 'required|string|min:4'
         ]);
 
-        if ($this->authorize('update', Auth::user())){
+        if (Gate::allows('user')){
             $user['name'] = $request->input('name');
             $user['email'] = $request->input('email');
             $user['password'] = bcrypt($request->input('password'));
@@ -123,7 +125,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($this->authorize('delete', $user)){
+        if (Gate::allows('user')){
             $user->delete();
         }
         return redirect()->route('user.index');
@@ -135,7 +137,7 @@ class UserController extends Controller
     public function suspend(Request $request, User $user) {
         if (Gate::allows('admin')){
             User::find($user->id)->update([
-                'role' => User::ROLE_ADMIN
+                'role' => User::ROLE_SUSPEND
             ]);
         }
         return redirect()->route('user.index');
@@ -143,8 +145,9 @@ class UserController extends Controller
 
     public function restore(Request $request, User $user) {
         if (Gate::allows('admin')){
-            $restore = User::where('id', $user->id)->select('role')->get();
-            $restore['role'] = User::ROLE_USER;
+            User::find($user->id)->update([
+                'role' => User::ROLE_USER
+            ]);
         }
         return redirect()->route('user.index');
     }
