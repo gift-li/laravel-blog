@@ -19,10 +19,10 @@
         <div class="form-group row">
             <label for="content" class="col-sm-2 col-form-label">內文</label>
             <div class="col-sm-10">
-                <textarea name="content" id="content" rows="10" class="form-control border border-grey">{{ $post->content }}</textarea>
+                <textarea name="content" id="content" rows="10" class="form-control border border-grey" placeholder="content">{{ $post->content }}</textarea>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">新增</button>
+        <button class="btn btn-primary" type="submit">更新貼文</button>
     </div>
 </form>
 @endsection

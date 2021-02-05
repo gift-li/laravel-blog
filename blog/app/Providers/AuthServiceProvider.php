@@ -49,5 +49,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('author', function ($user, $post) {
             return $post->author_id === $user->id or Gate::allows('admin');
         });
+
+        Gate::define('myAccount', function ($user, $lookUser) {
+            return $lookUser->id === $user->id or Gate::allows('admin');
+        });
     }
 }

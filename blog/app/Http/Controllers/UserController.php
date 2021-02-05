@@ -57,7 +57,7 @@ class UserController extends Controller
         if (Gate::allows('admin')){
             $user['role'] = User::ROLE_ADMIN;
             $user->save();
-        }else {
+        }elseif (Gate::allows('myAccount', $user)) {
             $user->save();
         }
 
@@ -72,7 +72,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if ($this->authorize('view', Auth::user())){
+        if (Gate::allows('myAccount', $user)){
             return view('user.show')->withUser($user);
         }
     }
@@ -87,7 +87,7 @@ class UserController extends Controller
     {
         // Ques: 以下作法403，檢查過policy、參數、dd()，都正常卻無法正常運作
         //      if ($this->authorize('view', Auth::user())){
-        if (Gate::allows('user')){
+        if (Gate::allows('myAccount', $user)){
             return view('user.edit')->withUser($user);
         }
     }
@@ -107,7 +107,7 @@ class UserController extends Controller
             'password' => 'required|string|min:4'
         ]);
 
-        if (Gate::allows('user')){
+        if (Gate::allows('myAccount', $user)){
             $user['name'] = $request->input('name');
             $user['email'] = $request->input('email');
             $user['password'] = bcrypt($request->input('password'));
@@ -125,10 +125,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if (Gate::allows('user')){
-            $user->delete();
-        }
-        return redirect()->route('user.index');
+        // Aborted: No permenant delete -> suspend/restore instead
+        // if (Gate::allows('user')){
+        //     $user->delete();
+        // }
+        // return redirect()->route('user.index');
     }
     
     // Ques: 'role' of the user->id model cannot be update

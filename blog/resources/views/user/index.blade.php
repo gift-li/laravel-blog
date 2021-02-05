@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Laravel-UserList
+    userList
 @endsection
 @section('scripts')
 @endsection

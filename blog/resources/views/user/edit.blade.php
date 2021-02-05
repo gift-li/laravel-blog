@@ -30,12 +30,13 @@
                 <input type="text" id="email" name="email" value="{{ $user->email }}" class="form-control-plaintext border border-gre" placeholder="email" requireds>
             </div>
         </div>
-        <div class="form-group row">
+        {{-- 密碼顯示abort: 不需要 + Hash為單向->無法檢視原密碼 --}}
+        {{-- <div class="form-group row">
             <label for="content" class="col-sm-2 col-form-label">密碼</label>
             <div class="col-sm-10">
                 <input type="text" id="password" name="password" value="{{ $user->password }}" class="form-control-plaintext border border-gre" placeholder="password" requireds>
             </div>
-        </div>
+        </div> --}}
         <button class="btn btn-primary" type="submit">更新</button>
     </div>
 </form>

@@ -15,7 +15,7 @@
         </ul>
         </div><br />
         @endif
-        <h1 class="">新增帳號</h1>
+        <h1 class="text-center py-2 my-2 border-bottom">新增帳號</h1>
         <form class="form-post text-center" action="{{ route('user.store') }}" method="post">
             @csrf
             <div class="form-group">
@@ -30,7 +30,7 @@
                 <label for="content" class="sr-only">密碼</label>
                 <input type="text" id="password" name="password" class="form-control" placeholder="password" requireds> {{-- Be care of the type --}}
             </div>
-            <button class="btn btn-primary" type="submit">創建帳號</button>
+            <button class="btn btn-primary" type="submit">創建管理者帳號</button>
         </form>
     </div>
 </div>

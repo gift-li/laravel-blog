@@ -19,5 +19,11 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('1234'),
             'role' => User::ROLE_ADMIN
         ]);
+        DB::table('users')->insert([
+            'name' => 'suspendAccount',
+            'email' => 's@gmail.com',
+            'password' => bcrypt('1234'),
+            'role' => User::ROLE_SUSPEND
+        ]);
     }
 }
